@@ -80,7 +80,19 @@ pipeline {
             }
         }
 
-        // Stage 5: Run the stable automated CI test suite.
+        // Stage 5: Perform automated static code-quality analysis.
+        stage('Code Quality') {
+            steps {
+                echo 'Running ESLint static code analysis...'
+
+                sh '''
+                    npm run quality:ci
+                    echo "Code quality analysis completed successfully."
+                '''
+            }
+        }
+
+        // Stage 6: Run the stable automated CI test suite.
         stage('Automated Testing') {
             steps {
                 echo 'Running stable automated test suite...'
@@ -101,6 +113,10 @@ pipeline {
 
         failure {
             echo 'Pipeline failed. Check the Jenkins console output.'
+        }
+
+        always {
+            echo 'SIT223 EVAT CI pipeline execution finished.'
         }
     }
 }
