@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+    // Jenkins may not inherit the same PATH as the macOS terminal.
+    // This ensures Node.js, npm and Git can be found.
     environment {
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
     }
@@ -20,6 +22,23 @@ pipeline {
 
                     echo "Latest commit:"
                     git log -1 --oneline
+                '''
+            }
+        }
+
+        stage('Environment Verification') {
+            steps {
+                echo 'Verifying CI environment and required development tools...'
+
+                sh '''
+                    echo "Node.js version:"
+                    node --version
+
+                    echo "NPM version:"
+                    npm --version
+
+                    echo "Git version:"
+                    git --version
                 '''
             }
         }
