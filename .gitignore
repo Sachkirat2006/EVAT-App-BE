@@ -3,3 +3,4 @@
 /.vscode
 /auth
 *.js
+!eslint.config.js
