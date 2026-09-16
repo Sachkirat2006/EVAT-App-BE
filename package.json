@@ -4,10 +4,11 @@
   "description": "The EVAT Backend is a server-side application supporting the Electric Vehicle Adoption Tool (EVAT). Built with Node.js, Express.js, and MongoDB,",
   "main": "server.ts",
   "scripts": {
-    "server": "ts-node-dev server.ts",
-    "build": "tsc",
-    "test": "jest"
-  },
+  "server": "ts-node-dev server.ts",
+  "build": "tsc",
+  "test": "jest",
+  "test:ci": "jest test/repositories/user-repository.test.ts test/repositories/vehicle-repository.test.ts test/repositories/station-repository.test.ts test/controllers/vehicle-controller.test.ts test/middlewares/auth-middleware.test.ts test/middlewares/error-middleware.test.ts test/middlewares/is-admin-auth.test.ts --runInBand"
+},
   "author": "",
   "license": "ISC",
   "devDependencies": {
