@@ -42,6 +42,17 @@ pipeline {
                 '''
             }
         }
+
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing project dependencies using npm ci...'
+
+                sh '''
+                    npm ci
+                    echo "Dependency installation completed successfully."
+                '''
+            }
+        }
     }
 
     post {
