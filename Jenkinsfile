@@ -53,6 +53,16 @@ pipeline {
                 '''
             }
         }
+
+        stage('Automated Testing') {
+            steps {
+                echo 'Running stable automated test suite...'
+
+                sh '''
+                    npm run test:ci
+                '''
+            }
+        }
     }
 
     post {
