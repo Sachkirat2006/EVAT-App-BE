@@ -9,6 +9,7 @@ pipeline {
 
     stages {
 
+        // Stage 1: Check out the dedicated SIT223 pipeline branch.
         stage('Checkout') {
             steps {
                 echo 'Checking out EVAT backend source code...'
@@ -26,6 +27,7 @@ pipeline {
             }
         }
 
+        // Stage 2: Verify that Jenkins has access to the required CI tools.
         stage('Environment Verification') {
             steps {
                 echo 'Verifying CI environment and required development tools...'
@@ -43,6 +45,7 @@ pipeline {
             }
         }
 
+        // Stage 3: Install exact dependency versions from package-lock.json.
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies using npm ci...'
@@ -54,17 +57,43 @@ pipeline {
             }
         }
 
+        // Stage 4: Compile the TypeScript backend and verify build output.
+        stage('Build') {
+            steps {
+                echo 'Building EVAT backend application...'
+
+                sh '''
+                    echo "Removing previous build output..."
+                    rm -rf dist
+
+                    echo "Compiling TypeScript source code..."
+                    npm run build
+
+                    echo "Verifying build output..."
+                    test -d dist
+
+                    echo "Build artifact contents:"
+                    ls -la dist
+
+                    echo "Production build completed successfully."
+                '''
+            }
+        }
+
+        // Stage 5: Run the stable automated CI test suite.
         stage('Automated Testing') {
             steps {
                 echo 'Running stable automated test suite...'
 
                 sh '''
                     npm run test:ci
+                    echo "Automated testing completed successfully."
                 '''
             }
         }
     }
 
+    // Report the final status of the Jenkins pipeline.
     post {
         success {
             echo 'Pipeline completed successfully.'
